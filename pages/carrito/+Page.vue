@@ -105,9 +105,9 @@
                           </td>
                           <td>
                             <div class="text-end">
-                              <div><small class="text-muted">Subtotal: ${{ (reserva.subtotal || reserva.Subtotal || reserva.precioMesa || reserva.PrecioMesa || 0).toFixed(2) }}</small></div>
-                              <div><small class="text-muted">IVA (11.5%): ${{ (reserva.iva || reserva.Iva || 0).toFixed(2) }}</small></div>
-                              <div><strong>Total: ${{ (reserva.totalFinal || reserva.TotalFinal || 0).toFixed(2) }}</strong></div>
+                              <div><small class="text-muted">Subtotal: ${{ Number(reserva.subtotal || reserva.Subtotal || reserva.precioMesa || reserva.PrecioMesa || 0).toFixed(2) }}</small></div>
+                              <div><small class="text-muted">IVA (11.5%): ${{ Number(reserva.iva || reserva.Iva || 0).toFixed(2) }}</small></div>
+                              <div><strong>Total: ${{ Number(reserva.totalFinal || reserva.TotalFinal || 0).toFixed(2) }}</strong></div>
                             </div>
                           </td>
                           <td>
@@ -284,7 +284,7 @@
                             <td>{{ reserva.hora }}</td>
                             <td><i class="bi bi-people-fill"></i> {{ reserva.numeroPersonas }}</td>
                             <td><span class="badge bg-info">{{ reserva.metodoPago || 'No especificado' }}</span></td>
-                            <td><strong class="text-success">${{ (reserva.total || 0).toFixed(2) }}</strong></td>
+                            <td><strong class="text-success">${{ Number(reserva.total || 0).toFixed(2) }}</strong></td>
                             <td><span class="badge bg-success">{{ reserva.estado }}</span></td>
                           </tr>
                           <tr v-if="reserva.observaciones" class="table-light">
