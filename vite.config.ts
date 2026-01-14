@@ -6,6 +6,6 @@ export default defineConfig({
   plugins: [vue()],
   plugins: [vue()],
   preview: {
-    allowedHosts: ["integracion-production-8d8e.up.railway.app"]
+    allowedHosts: ["integracion-production-8d8e.up.railway.app", "cafesanjuanmc.up.railway.app"]
   }
 });
