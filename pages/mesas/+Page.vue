@@ -4,7 +4,7 @@
     <div v-if="loading" class="loading-overlay">
       <div class="loading-content">
         <div class="logo-wrapper">
-          <img src="/img/logo-rincon.png" alt="Un Rincón" class="logo-animado" />
+          <img src="/img/logo-rincon.png" alt="Cafe SanJuan" class="logo-animado" />
         </div>
         <p class="loading-text">Cargando mesas disponibles...</p>
       </div>
@@ -111,14 +111,20 @@ export default {
           }
           
           // Normalizar los nombres de los campos (el API puede devolver en minúsculas o PascalCase)
-          mesasGlobal = mesas.map(m => ({
-            IdMesa: m.IdMesa || m.idMesa || m.id,
-            NumeroMesa: m.NumeroMesa || m.numeroMesa || m.numero,
-            TipoMesa: m.TipoMesa || m.tipoMesa || m.tipo || 'N/A',
-            Capacidad: m.Capacidad || m.capacidad,
-            Estado: m.Estado || m.estado || 'Disponible',
-            ImagenURL: m.ImagenURL || m.imagenURL || m.imagenUrl || m.imagen || ''
-          }));
+          mesasGlobal = mesas.map(m => {
+            const estadoRaw = m.Estado || m.estado || 'Disponible'
+            // Normalizar estado a formato con primera letra mayúscula
+            const estadoNormalizado = estadoRaw.charAt(0).toUpperCase() + estadoRaw.slice(1).toLowerCase()
+            
+            return {
+              IdMesa: m.IdMesa || m.idMesa || m.id,
+              NumeroMesa: m.NumeroMesa || m.numeroMesa || m.numero,
+              TipoMesa: m.TipoMesa || m.tipoMesa || m.tipo || 'N/A',
+              Capacidad: m.Capacidad || m.capacidad,
+              Estado: estadoNormalizado,
+              ImagenURL: m.ImagenURL || m.imagenURL || m.imagenUrl || m.imagen || ''
+            }
+          });
           
           console.log("Mesas normalizadas:", mesasGlobal);
           this.poblarCapacidades(mesasGlobal);

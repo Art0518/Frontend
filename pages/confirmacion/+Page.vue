@@ -4,7 +4,7 @@
       <h2>¡Reserva Confirmada!</h2>
       <div id="detalleReserva"></div>
     <a href="/" class="btn-verde" style="display:inline-block; margin-top:20px; text-decoration:none;">Volver al inicio</a>
-      <a href="/mis-reservas" class="btn-verde" style="display:inline-block; margin-top:20px; margin-left:10px; text-decoration:none;">Ver mis reservas</a>
+      <a href="/carrito" class="btn-verde" style="display:inline-block; margin-top:20px; margin-left:10px; text-decoration:none;">Carrito</a>
     </div>
   </div>
 </template>

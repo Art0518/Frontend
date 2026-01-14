@@ -14,7 +14,6 @@
             <option value="">Todos los tipos</option>
             <option value="Interior">Interior</option>
             <option value="Exterior">Exterior</option>
-            <option value="Terraza">Terraza</option>
           </select>
           <select v-model="filtroEstado">
             <option value="">Todos los estados</option>
@@ -104,6 +103,8 @@
               type="number" 
               placeholder="Ej: 1, 2, 3..." 
               min="1"
+              step="1"
+              @keypress="validarSoloEnteros"
               required 
             />
           </div>
@@ -113,7 +114,6 @@
             <select v-model="mesaForm.tipoMesa" required>
               <option value="Interior">Interior</option>
               <option value="Exterior">Exterior</option>
-              <option value="Terraza">Terraza</option>
             </select>
           </div>
 
@@ -125,6 +125,8 @@
               placeholder="2-10 personas" 
               min="2" 
               max="10"
+              step="1"
+              @keypress="validarSoloEnteros"
               required 
             />
           </div>
@@ -229,7 +231,8 @@ export default {
         resultado = resultado.filter(m => m.Capacidad === parseInt(filtroCapacidad.value))
       }
 
-      return resultado
+      // Ordenar por número de mesa
+      return resultado.sort((a, b) => a.NumeroMesa - b.NumeroMesa)
     })
 
     const capacidadesUnicas = computed(() => {
@@ -447,7 +450,9 @@ export default {
           cerrarModal()
           await cargarMesas()
         } else {
-          const mensaje = data.mensaje || data.Mensaje || data.message || 'No se pudo guardar la mesa'
+          let mensaje = data.mensaje || data.Mensaje || data.message || 'No se pudo guardar la mesa'
+          // Corregir problemas de codificación en mensajes del servidor
+          mensaje = mensaje.replace(/n�mero/g, 'número')
           if (typeof window.showError === 'function') {
             window.showError(mensaje)
           } else {
@@ -515,6 +520,14 @@ export default {
       }
     }
 
+    const validarSoloEnteros = (event) => {
+      // Prevenir el ingreso de punto, coma y signo menos
+      const char = String.fromCharCode(event.keyCode || event.which)
+      if (char === '.' || char === ',' || char === '-' || char === 'e' || char === 'E') {
+        event.preventDefault()
+      }
+    }
+
     onMounted(() => {
       cargarMesas()
     })
@@ -545,7 +558,8 @@ export default {
       quitarImagen,
       guardarMesa,
       cambiarEstadoMesa,
-      ejecutarCambioEstado
+      ejecutarCambioEstado,
+      validarSoloEnteros
     }
   }
 }

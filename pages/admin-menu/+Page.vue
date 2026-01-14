@@ -7,12 +7,12 @@
         <!-- Filtros y b�squeda -->
         <div class="filtros-container">
           <input 
-          v-model="busquedaPlato" 
-     type="text" 
+            v-model="busquedaPlato" 
+            type="text" 
             placeholder="Buscar plato..."
-      @input="filtrarPlatos"
-/>
-       <button class="btn-nuevo-plato" @click="abrirModalNuevo()">+ Nuevo Plato</button>
+            @input="filtrarPlatos"
+          />
+          <button class="btn-nuevo-plato" @click="abrirModalNuevo()">+ Nuevo Plato</button>
         </div>
 
         <!-- Loading -->
@@ -53,9 +53,6 @@
               <div class="plato-acciones">
                 <button class="btn-editar" @click="editarPlato(plato)">
                   <i class="bi bi-pencil"></i> Editar
-                </button>
-                <button class="btn-eliminar" @click="eliminarPlato(plato)">
-                  <i class="bi bi-trash"></i> Eliminar
                 </button>
               </div>
             </div>
@@ -117,18 +114,9 @@
             <label for="categoriaPlato">Categoría:</label>
             <select v-model="platoForm.categoria" required @change="platoForm.tipoComida = platoForm.categoria">
               <option value="">Seleccionar categoría</option>
-              <option value="Entrada">Entrada</option>
-              <option value="Plato Principal">Plato Principal</option>
+              <option value="Otros">Otros</option>
               <option value="Postre">Postre</option>
               <option value="Bebida">Bebida</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="estadoPlato">Estado:</label>
-            <select v-model="platoForm.estado" required>
-              <option value="ACTIVO">Activo</option>
-              <option value="INACTIVO">Inactivo</option>
             </select>
           </div>
 
@@ -177,6 +165,7 @@ export default {
     const platos = ref([])
     const platosFiltrados = ref([])
     const busquedaPlato = ref('')
+    const filtroEstado = ref('')
     const cargando = ref(false)
     const guardando = ref(false)
     const subiendoImagen = ref(false)
@@ -230,6 +219,9 @@ export default {
 
     // Normalizar los campos del plato (maneja diferentes formatos de API)
     const normalizarPlato = (plato) => {
+      const estadoRaw = plato.Estado || plato.estado || 'ACTIVO'
+      const estadoNormalizado = estadoRaw.toUpperCase()
+      
       return {
         IdPlato: plato.IdPlato || plato.idPlato || plato.id,
         Nombre: plato.Nombre || plato.nombre || '',
@@ -238,18 +230,21 @@ export default {
         Categoria: plato.Categoria || plato.categoria || '',
         TipoComida: plato.TipoComida || plato.tipoComida || plato.Categoria || plato.categoria || '',
         Imagen: plato.ImagenURL || plato.imagenURL || plato.imagenUrl || plato.Imagen || plato.imagen || '',
-        Estado: plato.Estado || plato.estado || 'ACTIVO',
-        Disponibilidad: (plato.Estado || plato.estado || 'ACTIVO') === 'ACTIVO' ? 'Disponible' : 'No Disponible'
+        Estado: estadoNormalizado,
+        Disponibilidad: estadoNormalizado === 'ACTIVO' ? 'Disponible' : 'No Disponible'
       }
     }
 
     const filtrarPlatos = () => {
       const termino = busquedaPlato.value.toLowerCase()
-  platosFiltrados.value = platos.value.filter(plato => 
-        plato.Nombre.toLowerCase().includes(termino) ||
-        plato.Descripcion.toLowerCase().includes(termino) ||
-        plato.Categoria.toLowerCase().includes(termino)
-      )
+      platosFiltrados.value = platos.value.filter(plato => {
+        const coincideBusqueda = plato.Nombre.toLowerCase().includes(termino) ||
+          plato.Descripcion.toLowerCase().includes(termino) ||
+          plato.Categoria.toLowerCase().includes(termino)
+        
+        // Solo mostrar platos activos
+        return coincideBusqueda && plato.Estado === 'ACTIVO'
+      })
     }
 
     const abrirModalNuevo = () => {
@@ -553,6 +548,7 @@ export default {
       platos,
       platosFiltrados,
       busquedaPlato,
+      filtroEstado,
       cargando,
       guardando,
       subiendoImagen,

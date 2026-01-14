@@ -1,6 +1,6 @@
 <template>
   <footer>
-    © 2025 Un Rincón en San Juan | Sabores del Caribe y tradición puertorriqueña
+    © 2025 Cafe SanJuan | Restaurante
   </footer>
 </template>
 

@@ -25,7 +25,6 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th>Nombre</th>
               <th>Descuento (%)</th>
               <th>Fecha Inicio</th>
               <th>Fecha Fin</th>
@@ -36,7 +35,6 @@
           <tbody>
             <tr v-for="promocion in promociones" :key="promocion.IdPromocion">
               <td>{{ promocion.IdPromocion }}</td>
-              <td>{{ promocion.Nombre }}</td>
               <td>{{ promocion.Descuento }}%</td>
               <td>{{ formatearFecha(promocion.FechaInicio) }}</td>
               <td>{{ formatearFecha(promocion.FechaFin) }}</td>
@@ -83,17 +81,6 @@
 
         <form @submit.prevent="guardarPromocion()">
           <div class="campo">
-            <label>Nombre de la Promoción *</label>
-            <input 
-              v-model="promocionForm.nombre" 
-              type="text" 
-              placeholder="Ej: Descuento Black Friday" 
-              required
-              maxlength="100"
-            />
-          </div>
-
-          <div class="campo">
             <label>Descuento (%) *</label>
             <input 
               v-model.number="promocionForm.porcentajeDescuento" 
@@ -112,6 +99,7 @@
             <input 
               v-model="promocionForm.fechaInicio" 
               type="date" 
+              :min="fechaMinimaInicio"
               required
             />
           </div>
@@ -121,15 +109,16 @@
             <input 
               v-model="promocionForm.fechaFin" 
               type="date" 
+              :min="fechaMinimaFin"
               required
             />
           </div>
 
-          <div class="campo">
+          <div class="campo" v-if="promocionEditando">
             <label>Estado *</label>
-            <select v-model="promocionForm.activo" required>
-              <option :value="true">Activa</option>
-              <option :value="false">Inactiva</option>
+            <select v-model="promocionForm.estado" required>
+              <option value="Activa">Activa</option>
+              <option value="Inactiva">Inactiva</option>
             </select>
           </div>
 
@@ -146,7 +135,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
 const API_BASE_URL = 'https://menu-production-279b.up.railway.app'
 
@@ -165,7 +154,39 @@ export default {
       porcentajeDescuento: 0,
       fechaInicio: '',
       fechaFin: '',
-      activo: true
+      estado: 'Activa'
+    })
+
+    // Fecha mínima para inicio: mañana
+    const fechaMinimaInicio = computed(() => {
+      const hoy = new Date()
+      hoy.setHours(0, 0, 0, 0)
+      const manana = new Date(hoy)
+      manana.setDate(hoy.getDate() + 1)
+      const year = manana.getFullYear()
+      const month = String(manana.getMonth() + 1).padStart(2, '0')
+      const day = String(manana.getDate()).padStart(2, '0')
+      return `${year}-${month}-${day}`
+    })
+
+    // Fecha mínima para fin: día siguiente a fecha de inicio
+    const fechaMinimaFin = computed(() => {
+      if (!promocionForm.value.fechaInicio) {
+        const hoy = new Date()
+        hoy.setHours(0, 0, 0, 0)
+        const manana = new Date(hoy)
+        manana.setDate(hoy.getDate() + 1)
+        const year = manana.getFullYear()
+        const month = String(manana.getMonth() + 1).padStart(2, '0')
+        const day = String(manana.getDate()).padStart(2, '0')
+        return `${year}-${month}-${day}`
+      }
+      const fechaInicio = new Date(promocionForm.value.fechaInicio + 'T00:00:00')
+      fechaInicio.setDate(fechaInicio.getDate() + 1)
+      const year = fechaInicio.getFullYear()
+      const month = String(fechaInicio.getMonth() + 1).padStart(2, '0')
+      const day = String(fechaInicio.getDate()).padStart(2, '0')
+      return `${year}-${month}-${day}`
     })
 
     const cargarPromociones = async () => {
@@ -181,11 +202,11 @@ export default {
         const data = await response.json()
 
         if (Array.isArray(data)) {
-          promociones.value = data.map(normalizarPromocion)
+          promociones.value = data.map(normalizarPromocion).sort((a, b) => a.IdPromocion - b.IdPromocion)
         } else if (data.success && Array.isArray(data.data)) {
-          promociones.value = data.data.map(normalizarPromocion)
+          promociones.value = data.data.map(normalizarPromocion).sort((a, b) => a.IdPromocion - b.IdPromocion)
         } else if (data.data && Array.isArray(data.data)) {
-          promociones.value = data.data.map(normalizarPromocion)
+          promociones.value = data.data.map(normalizarPromocion).sort((a, b) => a.IdPromocion - b.IdPromocion)
         } else {
           console.error('Formato inesperado:', data)
           if (typeof window.showError === 'function') {
@@ -227,7 +248,7 @@ export default {
         porcentajeDescuento: 0,
         fechaInicio: '',
         fechaFin: '',
-        activo: true
+        estado: 'Activa'
       }
       mostrarModal.value = true
     }
@@ -239,7 +260,7 @@ export default {
         porcentajeDescuento: promocion.Descuento,
         fechaInicio: promocion.FechaInicio ? promocion.FechaInicio.split('T')[0] : '',
         fechaFin: promocion.FechaFin ? promocion.FechaFin.split('T')[0] : '',
-        activo: promocion.Estado === 'Activa'
+        estado: promocion.Estado
       }
       mostrarModal.value = true
     }
@@ -250,13 +271,6 @@ export default {
     }
 
     const guardarPromocion = async () => {
-      if (!promocionForm.value.nombre || promocionForm.value.nombre.trim().length < 3) {
-        if (typeof window.showError === 'function') {
-          window.showError('Error', 'El nombre debe tener al menos 3 caracteres')
-        }
-        return
-      }
-
       if (!promocionForm.value.porcentajeDescuento || promocionForm.value.porcentajeDescuento <= 0 || promocionForm.value.porcentajeDescuento > 100) {
         if (typeof window.showError === 'function') {
           window.showError('Error', 'El descuento debe estar entre 0.01 y 100')
@@ -281,11 +295,10 @@ export default {
       guardando.value = true
       try {
         const promoData = {
-          nombre: promocionForm.value.nombre.trim(),
+          nombre: "a",
           porcentajeDescuento: parseFloat(promocionForm.value.porcentajeDescuento),
           fechaInicio: promocionForm.value.fechaInicio,
-          fechaFin: promocionForm.value.fechaFin,
-          activo: promocionForm.value.activo
+          fechaFin: promocionForm.value.fechaFin
         }
 
         let response
@@ -294,8 +307,11 @@ export default {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+              nombre: "a",
               porcentajeDescuento: promoData.porcentajeDescuento,
-              estado: promoData.activo ? 'ACTIVA' : 'INACTIVA'
+              fechaInicio: promoData.fechaInicio,
+              fechaFin: promoData.fechaFin,
+              estado: promocionForm.value.estado
             })
           })
         } else {
@@ -332,29 +348,33 @@ export default {
     const eliminarPromocion = (promocion) => {
       if (typeof window.showConfirm === 'function') {
         window.showConfirm(
-          `¿Está seguro de inactivar la promoción "${promocion.Nombre}"?`,
+          `¿Está seguro de inactivar esta promoción?`,
           async () => {
             try {
-              const response = await fetch(`${API_BASE_URL}/api/promociones/admin/${promo.IdPromocion}`, {
+              const response = await fetch(`${API_BASE_URL}/api/promociones/admin/${promocion.IdPromocion}`, {
                 method: 'DELETE'
               })
 
+              if (!response.ok) {
+                throw new Error('Error al inactivar')
+              }
+
               const data = await response.json()
 
-              if (response.ok || data.success) {
+              if (data.success) {
                 if (typeof window.showSuccess === 'function') {
-                  window.showSuccess('Éxito', 'Promoción inactivada')
+                  window.showSuccess('Promoción inactivada correctamente')
                 }
                 await cargarPromociones()
               } else {
                 if (typeof window.showError === 'function') {
-                  window.showError('Error', data.mensaje || 'No se pudo inactivar')
+                  window.showError(data.mensaje || 'No se pudo inactivar')
                 }
               }
             } catch (error) {
               console.error('Error:', error)
               if (typeof window.showError === 'function') {
-                window.showError('Error', 'Error al inactivar')
+                window.showError('Error al inactivar la promoción')
               }
             }
           },
@@ -383,7 +403,9 @@ export default {
       editarPromocion,
       cerrarModal,
       guardarPromocion,
-      eliminarPromocion
+      eliminarPromocion,
+      fechaMinimaInicio,
+      fechaMinimaFin
     }
   }
 }

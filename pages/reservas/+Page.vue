@@ -153,6 +153,7 @@ export default {
       
       this.mesasZona.forEach(m => {
         const imgSrc = m.imagenURL?.trim() || 'https://via.placeholder.com/220x140?text=Mesa'
+        const precio = m.precio || m.Precio || 0
         const div = document.createElement('div')
         div.id = `mesa-${m.idMesa}`
         div.style.cssText = 'width:220px; background:white; border-radius:15px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.25); cursor:pointer; display:inline-block; margin:10px;'
@@ -161,6 +162,7 @@ export default {
           <div style="padding:10px; color:#000;">
             <h3 style="margin:0; color:#1a4d2e; font-size:18px;">Mesa ${m.numeroMesa}</h3>
             <p style="margin:4px 0; font-size:14px; color:#000;">Capacidad: <b>${m.capacidad} personas</b></p>
+            <p style="margin:4px 0; font-size:16px; color:#1a4d2e; font-weight:bold;">Precio: $${precio.toFixed(2)}</p>
           </div>
         `
         div.addEventListener('click', () => this.seleccionarMesa(m.idMesa, m.capacidad))

@@ -10,35 +10,35 @@ export function setupNotifications(app) {
       type: 'info',
       title: '',
       message: '',
-callback: null
+      callback: null
     },
     confirmation: {
       show: false,
-      title: 'Confirmaci�n',
+      title: 'Confirmación',
       message: '',
       onConfirm: null,
-    onCancel: null
+      onCancel: null
     }
   }
 
-  // Funci�n para mostrar notificaci�n
+  // Función para mostrar notificación
   window.showNotification = function(message, type = 'info', title = null, onClose = null) {
     const defaultTitles = {
-      success: '��xito!',
+      success: '¡Éxito!',
       error: 'Error',
       warning: 'Advertencia',
-      info: 'Informaci�n'
+      info: 'Información'
     }
 
-state.notification.show = true
+    state.notification.show = true
     state.notification.type = type
-    state.notification.title = title || defaultTitles[type] || 'Notificaci�n'
+    state.notification.title = title || defaultTitles[type] || 'Notificación'
     state.notification.message = message
     state.notification.callback = onClose
 
     // Emitir evento personalizado
     window.dispatchEvent(new CustomEvent('show-notification', {
-   detail: {
+      detail: {
         type,
         title: state.notification.title,
         message,
@@ -47,7 +47,7 @@ state.notification.show = true
     }))
   }
 
-  // Funci�n para mostrar confirmaci�n
+  // Función para mostrar confirmación
   window.showConfirm = function(message, onConfirm, onCancel = null, title = 'Confirmación') {
     state.confirmation.show = true
     state.confirmation.title = title
@@ -85,12 +85,12 @@ state.notification.show = true
     window.showNotification(message, 'info', title, onClose)
   }
 
-  // Compatibilidad con c�digo antiguo
+  // Compatibilidad con código antiguo
   window.showAlert = function(message, type = 'info') {
     window.showNotification(message, type)
   }
 
-console.log('? Sistema de notificaciones modales cargado correctamente')
+  console.log('✅ Sistema de notificaciones modales cargado correctamente')
 
   return state
 }
@@ -122,7 +122,7 @@ export function showError(message, title = null, onClose = null) {
 
 export function showWarning(message, title = null, onClose = null) {
   if (window.showWarning) {
-window.showWarning(message, title, onClose)
+    window.showWarning(message, title, onClose)
   }
 }
 

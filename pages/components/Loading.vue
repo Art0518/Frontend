@@ -2,7 +2,7 @@
 <div class="loading-overlay">
     <div class="loading-content">
       <div class="logo-wrapper">
-    <img src="/img/logo-rincon.png" alt="Un Rinc�n" class="logo-animado" />
+    <img src="/img/logo-rincon.png" alt="Cafe SanJuan" class="logo-animado" />
       </div>
       <p class="loading-text">Preparando tu experiencia...</p>
  </div>

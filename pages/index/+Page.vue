@@ -5,7 +5,7 @@
     <!-- ===================== -->
     <section class="home-hero">
       <div class="home-content">
-        <h1>Bienvenido a Un Rincón en San Juan</h1>
+        <h1>Bienvenido a Cafe SanJuan</h1>
    <p>
      Vive una experiencia caribeña única entre sabores, aromas y tradición.
         </p>
@@ -22,7 +22,7 @@
       <h2>Nuestra Historia</h2>
 
       <p>
-        En el corazón del Viejo San Juan, entre calles adoquinadas y brisa del mar Caribe, nació Un Rincón en San Juan. Nuestro sueño comenzó con una simple idea: crear un espacio donde el aroma del café puertorriqueño se mezcle con la calidez de nuestra gente y la pasión por la buena comida. Cada taza que servimos es un homenaje a nuestra tierra, a sus tradiciones y a las manos que cultivan el mejor café del Caribe. Aquí, cada sabor cuenta una historia: la historia de Puerto Rico, contada desde un rincón lleno de amor, sabor y raíces.
+        En el corazón de San Juan, nació Cafe SanJuan. Nuestro sueño comenzó con una simple idea: crear un espacio donde el aroma del café se mezcle con la calidez de nuestra gente y la pasión por la buena comida. Cada taza que servimos es un homenaje a nuestras tradiciones. Aquí, cada sabor cuenta una historia llena de amor y dedicación.
       </p>
 
       <div class="historia-imagen-container">

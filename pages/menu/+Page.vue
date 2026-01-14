@@ -4,7 +4,7 @@
     <div v-if="loading" class="loading-overlay">
       <div class="loading-content">
         <div class="logo-wrapper">
-          <img src="/img/logo-rincon.png" alt="Un Rincon" class="logo-animado" />
+          <img src="/img/logo-rincon.png" alt="Cafe SanJuan" class="logo-animado" />
         </div>
         <p class="loading-text">Cargando menu del Caribe...</p>
       </div>

@@ -30,7 +30,6 @@
             <th>Rol</th>
             <th>Estado</th>
             <th>Teléfono</th>
-            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -54,31 +53,12 @@
     </span>
         </td>
          <td>{{ cliente.Telefono || 'N/A' }}</td>
-         <td class="acciones-cell">
-              <button class="btn btn-editar" @click="editarCliente(cliente)">
-                <i class="bi bi-pencil"></i> Editar
-              </button>
-              <button 
-                v-if="cliente.Estado === 'Activo'"
-                class="btn btn-eliminar" 
-                @click="inactivarCliente(cliente)"
-              >
-                <i class="bi bi-x-circle"></i> Inactivar
-              </button>
-              <button 
-                v-else
-                class="btn btn-activar" 
-                @click="activarCliente(cliente)"
-              >
-                <i class="bi bi-check-circle"></i> Activar
-              </button>
-         </td>
           </tr>
         </tbody>
       </table>
 
       <!-- PAGINACIÓN -->
-      <div class="paginacion" v-if="totalPaginas > 1">
+      <div class="paginacion" v-if="clientesFiltrados.length > 0">
         <button 
           @click="cambiarPagina(paginaActual - 1)"
           :disabled="paginaActual === 1 || cargando"
@@ -86,7 +66,7 @@
           Anterior
         </button>
         <span style="margin: 0 15px; color: #5b4230;">
-          Página {{ paginaActual }} de {{ totalPaginas }} (Total: {{ totalRegistros }} clientes)
+          Página {{ paginaActual }} de {{ totalPaginas }} (Total: {{ clientesFiltrados.length }} clientes)
         </span>
         <button 
           @click="cambiarPagina(paginaActual + 1)"
@@ -202,31 +182,58 @@ export default {
         
         console.log('📦 Datos recibidos del API:', data)
 
-        // El API devuelve { total, pagina, tamanoPagina, totalPaginas, usuarios }
-        if (data.usuarios && Array.isArray(data.usuarios)) {
+        // Manejar diferentes formatos de respuesta
+        let usuariosData = []
+        
+        if (Array.isArray(data)) {
+          // Si data es directamente un array
+          usuariosData = data
+        } else if (data.usuarios && Array.isArray(data.usuarios)) {
+          // Si tiene la propiedad usuarios
+          usuariosData = data.usuarios
+        } else if (data.data && Array.isArray(data.data)) {
+          // Si tiene la propiedad data
+          usuariosData = data.data
+        } else if (data.mensaje) {
+          // Si hay un mensaje de error
+          console.error('Error del backend:', data.mensaje)
+          if (typeof window.showError === 'function') {
+            window.showError(data.mensaje)
+          }
+          cargando.value = false
+          return
+        }
+
+        if (usuariosData.length > 0) {
           // Normalizar los datos del API (minúsculas) a PascalCase esperado por el frontend
-          const usuariosNormalizados = data.usuarios.map(u => ({
-            IdUsuario: u.IdUsuario || u.idUsuario,
-            Nombre: u.Nombre || u.nombre || '',
-            Email: u.Email || u.email || '',
-            Cedula: u.Cedula || u.cedula || '',
-            Rol: u.Rol || u.rol || 'Usuario',
-            Estado: u.Estado || u.estado || 'ACTIVO',
-            Telefono: u.Telefono || u.telefono || '',
-            Direccion: u.Direccion || u.direccion || ''
-          }))
+          const usuariosNormalizados = usuariosData.map(u => {
+            let rol = u.Rol || u.rol || 'CLIENTE'
+            // Normalizar Usuario a CLIENTE
+            if (rol === 'Usuario') rol = 'CLIENTE'
+            
+            return {
+              IdUsuario: u.IdUsuario || u.idUsuario,
+              Nombre: u.Nombre || u.nombre || '',
+              Email: u.Email || u.email || '',
+              Cedula: u.Cedula || u.cedula || '',
+              Rol: rol,
+              Estado: u.Estado || u.estado || 'ACTIVO',
+              Telefono: u.Telefono || u.telefono || '',
+              Direccion: u.Direccion || u.direccion || ''
+            }
+          })
           
           clientes.value = usuariosNormalizados
           clientesFiltrados.value = usuariosNormalizados
-          totalRegistros.value = data.total || 0
+          totalRegistros.value = data.total || usuariosNormalizados.length
           
           console.log('✅ Clientes cargados:', clientes.value.length)
           console.log('📊 Total registros:', totalRegistros.value)
         } else {
-          console.error('Formato de respuesta inesperado:', data)
-          if (typeof window.showError === 'function') {
-            window.showError('Error al cargar los clientes')
-          }
+          console.warn('No se encontraron usuarios')
+          clientes.value = []
+          clientesFiltrados.value = []
+          totalRegistros.value = 0
         }
       } catch (error) {
         console.error('Error cargando clientes:', error)
@@ -240,11 +247,15 @@ export default {
 
     const filtrarClientes = () => {
       const termino = buscador.value.toLowerCase()
-      clientesFiltrados.value = clientes.value.filter(cliente => 
-        cliente.Nombre.toLowerCase().includes(termino) ||
-        cliente.Email.toLowerCase().includes(termino)
-      )
-      paginaActual.value = 1
+      if (termino === '') {
+        paginaActual.value = 1
+        cargarClientes()
+      } else {
+        clientesFiltrados.value = clientes.value.filter(cliente => 
+          cliente.Nombre.toLowerCase().includes(termino) ||
+          cliente.Email.toLowerCase().includes(termino)
+        )
+      }
     }
 
     const editarCliente = (cliente) => {

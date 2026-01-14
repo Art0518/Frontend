@@ -3,46 +3,25 @@
     <!-- Header -->
     <div class="page-header">
       <div class="header-content">
- <div class="title-section">
+        <div class="title-section">
           <i class="bi bi-clipboard-check"></i>
           <h1>Gestion de Reservas - Administrador</h1>
         </div>
         <button class="btn-actualizar" @click="cargarTodasReservas">
- <i class="bi bi-arrow-clockwise"></i> Actualizar
+          <i class="bi bi-arrow-clockwise"></i> Actualizar
         </button>
       </div>
       <p class="subtitle">Visualiza todas las reservas y gestiona la facturacion</p>
-    </div>
-
-    <!-- Filtros de Busqueda -->
-    <div class="filtros-card">
-      <h3><i class="bi bi-funnel"></i> Filtros de Busqueda</h3>
-      <div class="filtros-content">
-        <div class="filtro-group">
-          <label>Estado:</label>
-          <select v-model="filtroEstado" class="form-select">
-            <option value="">Todos los estados</option>
-     <option value="HOLD">En espera (HOLD)</option>
-            <option value="CONFIRMADA">Confirmadas</option>
-          </select>
-   </div>
-  <div class="filtro-group">
-       <label>Acciones:</label>
-          <button class="btn-filtrar" @click="aplicarFiltros">
-  <i class="bi bi-search"></i> Filtrar
-        </button>
-   </div>
- </div>
     </div>
 
     <!-- Tarjetas de Estadisticas -->
     <div class="stats-grid">
       <div class="stat-card stat-blue">
         <div class="stat-content">
-        <div class="stat-info">
-         <h4>Total Reservas</h4>
+          <div class="stat-info">
+            <h4>Total Reservas</h4>
             <h2>{{ estadisticas.total }}</h2>
-    </div>
+          </div>
           <div class="stat-icon">
             <i class="bi bi-calendar-event"></i>
           </div>
@@ -53,34 +32,34 @@
         <div class="stat-content">
           <div class="stat-info">
             <h4>En Espera</h4>
-        <h2>{{ estadisticas.hold }}</h2>
-        </div>
- <div class="stat-icon">
-  <i class="bi bi-clock-history"></i>
+            <h2>{{ estadisticas.hold }}</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="bi bi-clock-history"></i>
           </div>
         </div>
       </div>
 
       <div class="stat-card stat-green">
         <div class="stat-content">
-     <div class="stat-info">
-    <h4>Confirmadas</h4>
-<h2>{{ estadisticas.confirmadas }}</h2>
+          <div class="stat-info">
+            <h4>Confirmadas</h4>
+            <h2>{{ estadisticas.confirmadas }}</h2>
           </div>
-        <div class="stat-icon">
-  <i class="bi bi-check-circle"></i>
+          <div class="stat-icon">
+            <i class="bi bi-check-circle"></i>
           </div>
-     </div>
+        </div>
       </div>
 
-  <div class="stat-card stat-cyan">
- <div class="stat-content">
+      <div class="stat-card stat-cyan">
+        <div class="stat-content">
           <div class="stat-info">
-  <h4>Total Ingresos</h4>
-            <h2>${{ estadisticas.ingresos.toFixed(2) }}</h2>
-     </div>
+            <h4>Total Ingresos</h4>
+            <h2>${{ estadisticas.ingresos }}</h2>
+          </div>
           <div class="stat-icon">
-    <i class="bi bi-currency-dollar"></i>
+            <i class="bi bi-currency-dollar"></i>
           </div>
         </div>
       </div>
@@ -89,75 +68,57 @@
     <!-- Listado de Reservas -->
     <div class="reservas-card">
       <h3><i class="bi bi-table"></i> Listado de Reservas</h3>
-      
+
       <!-- Loading -->
-  <div v-if="cargando" class="loading-state">
+      <div v-if="cargando" class="loading-state">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Cargando...</span>
-     </div>
+        </div>
         <p class="mt-2">Cargando reservas...</p>
       </div>
 
       <!-- Tabla con reservas -->
       <div v-else-if="reservasFiltradas.length > 0" class="table-container">
         <table class="reservas-table">
-    <thead>
+          <thead>
             <tr>
-          <th>ID</th>
-      <th>Cliente</th>
-      <th>Mesa</th>
-    <th>Fecha</th>
-           <th>Hora</th>
-           <th>Personas</th>
-          <th>Total</th>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Mesa</th>
+              <th>Fecha</th>
+              <th>Personas</th>
+              <th>Total</th>
               <th>Estado</th>
-   <th>Metodo Pago</th>
-              <th>Acciones</th>
-        </tr>
- </thead>
+            </tr>
+          </thead>
           <tbody>
-            <tr v-for="reserva in reservasFiltradas" :key="reserva.IdReserva">
-         <td>{{ reserva.IdReserva }}</td>
-     <td>{{ reserva.NombreCliente }}</td>
-       <td>Mesa {{ reserva.NumeroMesa }}</td>
-        <td>{{ formatearFecha(reserva.Fecha) }}</td>
-          <td>{{ reserva.Hora }}</td>
-       <td>{{ reserva.NumeroPersonas }}</td>
-  <td>${{ (reserva.Total || 0).toFixed(2) }}</td>
-       <td>
-   <span 
-       :class="[
-       'badge',
-   reserva.Estado === 'CONFIRMADA' ? 'badge-success' : 
- reserva.Estado === 'HOLD' ? 'badge-warning' : 'badge-secondary'
-    ]"
-           >
-     {{ reserva.Estado }}
-      </span>
-     </td>
-       <td>{{ reserva.MetodoPago || 'No especificado' }}</td>
-    <td>
-    <div class="action-buttons">
-         <button 
-      class="btn-action btn-info" 
-          @click="verDetalles(reserva)"
-    title="Ver detalles"
->
-               <i class="bi bi-eye"></i>
-      </button>
-       <button 
-             v-if="reserva.Estado === 'CONFIRMADA'"
-             class="btn-action btn-success" 
-       @click="generarFactura(reserva)"
-    title="Generar factura"
-           >
-        <i class="bi bi-receipt"></i>
-            </button>
-    </div>
-        </td>
-        </tr>
-    </tbody>
-  </table>
+            <tr v-for="reserva in reservasFiltradas" :key="reserva.IdReserva || reserva.idReserva">
+              <td>{{ reserva.IdUsuario || reserva.idUsuario }}</td>
+              <td>
+                <div>
+                  <strong>ID Usuario: {{ reserva.IdUsuario || reserva.idUsuario }}</strong>
+                  <br>
+                  {{ reserva.NombreCliente || reserva.NombreUsuario || reserva.nombreUsuario || '' }}
+                </div>
+              </td>
+              <td>Mesa {{ reserva.NumeroMesa || reserva.numeroMesa }}</td>
+              <td>{{ formatearFecha(reserva.Fecha || reserva.fecha) }}</td>
+              <td>{{ reserva.NumeroPersonas || reserva.numeroPersonas }}</td>
+              <td>${{ Number(reserva.Total || reserva.total || 0).toFixed(2) }}</td>
+              <td>
+                <span
+                  :class="[
+                    'badge',
+                    (reserva.Estado || reserva.estado) === 'CONFIRMADA' ? 'badge-success' :
+                    (reserva.Estado || reserva.estado) === 'HOLD' ? 'badge-warning' : 'badge-secondary'
+                  ]"
+                >
+                  {{ reserva.Estado || reserva.estado || 'Pendiente' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- Estado vacio -->
@@ -182,13 +143,11 @@ export default {
 
     const estadisticas = computed(() => {
       return {
-    total: reservas.value.length,
-  hold: reservas.value.filter(r => r.Estado === 'HOLD').length,
-        confirmadas: reservas.value.filter(r => r.Estado === 'CONFIRMADA').length,
-        ingresos: reservas.value
-.filter(r => r.Estado === 'CONFIRMADA')
-          .reduce((sum, r) => sum + (r.Total || 0), 0)
-      }
+        total: reservas.value.length,
+        hold: reservas.value.filter(r => (r.Estado || r.estado) === 'HOLD').length,
+        confirmadas: reservas.value.filter(r => (r.Estado || r.estado) === 'CONFIRMADA').length,
+        ingresos: reservas.value.reduce((sum, r) => sum + (Number(r.Total || r.total) || 0), 0).toFixed(2)
+      };
     })
 
     const reservasFiltradas = computed(() => {
@@ -201,25 +160,26 @@ export default {
     const cargarTodasReservas = async () => {
       cargando.value = true
       try {
-        const response = await fetch('/api/reservas/todas')
-        const data = await response.json()
-  
-        if (data.success) {
-          reservas.value = data.reservas || []
-       if (typeof window.showSuccess === 'function') {
-            window.showSuccess('Reservas cargadas', `Se cargaron ${reservas.value.length} reservas`)
-}
+        const response = await fetch('https://reserva-production-279b.up.railway.app/api/reservas')
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        if (data.success && Array.isArray(data.data)) {
+          reservas.value = data.data;
         } else {
-          if (typeof window.showError === 'function') {
-            window.showError('Error', data.message || 'No se pudieron cargar las reservas')
-          }
-      }
+          throw new Error(data.mensaje || 'Error desconocido al cargar reservas');
+        }
       } catch (error) {
-        console.error('Error cargando reservas:', error)
+        console.error('Error cargando reservas:', error);
+        if (typeof window.showError === 'function') {
+          window.showError('Error', error.message);
+        }
       } finally {
-        cargando.value = false
+        cargando.value = false;
       }
-  }
+    }
 
     const aplicarFiltros = () => {
       if (typeof window.showSuccess === 'function') {
@@ -379,68 +339,6 @@ export default {
 .btn-actualizar:hover {
   background: #2563eb;
   transform: translateY(-2px);
-}
-
-/* Filtros */
-.filtros-card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 25px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.filtros-card h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #1e293b;
-  margin: 0 0 15px 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.filtros-content {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 15px;
-  align-items: end;
-}
-
-.filtro-group label {
-  display: block;
-  font-weight: 600;
-  color: #475569;
-  margin-bottom: 5px;
-  font-size: 0.9rem;
-}
-
-.form-select {
-  width: 100%;
-  padding: 10px 15px;
-  border: 1px solid #e2e8f0;
-border-radius: 8px;
-  font-size: 0.95rem;
-  background: white;
-  cursor: pointer;
-}
-
-.btn-filtrar {
-  background: #3b82f6;
-  color: white;
-  border: none;
-  padding: 10px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.2s;
-}
-
-.btn-filtrar:hover {
-  background: #2563eb;
 }
 
 /* Tarjetas de Estadisticas */

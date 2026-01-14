@@ -6,8 +6,8 @@ import vikeVue from "vike-vue/config";
 
 export default {
   // https://vike.dev/head-tags
-  title: "My Vike App",
-  description: "Demo showcasing Vike",
+  title: "Cafe SanJuan",
+  description: "Restaurante Cafe SanJuan",
 
   extends: [vikeVue],
 } as Config;

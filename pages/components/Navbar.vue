@@ -3,7 +3,7 @@
     <nav class="modern-navbar">
       <!-- LOGO -->
       <a href="/">
-        <img src="/img/logo-rincon.png" alt="Un Rincón en San Juan" class="modern-logo" />
+        <img src="/img/logo-rincon.png" alt="Cafe SanJuan" class="modern-logo" />
    </a>
 
       <!-- ENLACES PRINCIPALES -->
@@ -26,10 +26,6 @@
             <a href="/carrito" class="modern-nav-link">
               <i class="bi bi-cart3"></i> Carrito
             </a>
-          
-            <!-- MIS RESERVAS (Solo usuarios logueados) -->
-            <span class="modern-separator">•</span>
-            <a href="/mis-reservas" class="modern-nav-link">Mis Reservas</a>
           </template>
         </template>
 
@@ -67,15 +63,12 @@
 
         <!-- LOGUEADO -->
         <template v-else>
- <span class="modern-user-name">
+          <span class="modern-user-name">
             {{ usuario.Nombre }}
-   <span v-if="isAdmin" class="modern-admin-badge">
+            <span v-if="isAdmin" class="modern-admin-badge">
               <i class="bi bi-shield-check"></i> Admin
-    </span>
- </span>
- <a href="/mi-perfil" class="modern-nav-link">
-  <i class="bi bi-person-circle"></i> Mi Perfil
-          </a>
+            </span>
+          </span>
           <button class="modern-login-btn btn-logout" @click="logout">
             <i class="bi bi-box-arrow-right"></i> Cerrar sesión
     </button>
