@@ -885,7 +885,7 @@ const BASES = {
   MENU: 'https://menu-production-279b.up.railway.app',
   RESERVAS: 'https://reserva-production-279b.up.railway.app',
   FACTURACION: 'https://factura-production-279b.up.railway.app',
-  BANCO: 'https://mibanca.runasp.net'
+  BANCO: 'http://mibanca.runasp.net'
 }
 
 // Configuración de cuentas bancarias
