@@ -5,6 +5,9 @@
     "preview": "vike build && vike preview"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "axios": "^1.13.2",
+    "bootstrap": "^5.3.3",
     "vike": "^0.4.250",
     "vike-vue": "^0.9.9",
     "vue": "^3.5.26"

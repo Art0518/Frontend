@@ -1,0 +1,838 @@
+/* ============================================================ */
+/* DISEÑO PREMIUM PARA CARRITO DE RESERVAS - CAFÉ SAN JUAN */
+/* ============================================================ */
+
+/* Variables de color mejoradas */
+:root {
+    --color-primario: #6b8e23;
+    --color-primario-oscuro: #4a6318;
+    --color-primario-claro: #8fae3d;
+ --color-exito: #28a745;
+    --color-exito-oscuro: #1e7e34;
+    --color-peligro: #dc3545;
+    --color-advertencia: #ffc107;
+    --color-info: #17a2b8;
+    --color-fondo: #f4f6f9;
+    --color-fondo-card: #ffffff;
+    --color-texto: #2c3e50;
+    --color-texto-muted: #6c757d;
+    --color-borde: #e0e6ed;
+    --sombra-suave: 0 2px 12px rgba(0, 0, 0, 0.08);
+    --sombra-media: 0 4px 20px rgba(0, 0, 0, 0.12);
+    --sombra-fuerte: 0 8px 30px rgba(0, 0, 0, 0.15);
+    --border-radius: 16px;
+    --border-radius-sm: 8px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset y estilos base */
+* {
+    box-sizing: border-box;
+}
+
+/* ============================================================ */
+/* CONTENEDOR PRINCIPAL */
+/* ============================================================ */
+.carrito-container {
+    background: linear-gradient(135deg, #f4f6f9 0%, #e9ecf0 100%);
+    min-height: 100vh;
+    padding: 3rem 0;
+}
+
+/* ============================================================ */
+/* TARJETA PRINCIPAL DEL CARRITO */
+/* ============================================================ */
+.carrito-card {
+    background: var(--color-fondo-card);
+    border-radius: var(--border-radius);
+    box-shadow: var(--sombra-fuerte);
+ overflow: hidden;
+    margin-bottom: 2.5rem;
+    animation: slideInUp 0.6s ease-out;
+    border: 1px solid rgba(107, 142, 35, 0.1);
+}
+
+.carrito-header {
+    background: linear-gradient(135deg, var(--color-primario) 0%, var(--color-primario-oscuro) 100%);
+    color: white;
+    padding: 2rem 2.5rem;
+  display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.carrito-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.carrito-header h4 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.75rem;
+    letter-spacing: -0.5px;
+    position: relative;
+ z-index: 1;
+}
+
+.carrito-header i {
+    font-size: 2.5rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+}
+
+/* ============================================================ */
+/* MENSAJE DE CARRITO VACÍO */
+/* ============================================================ */
+.carrito-vacio-container {
+    text-align: center;
+    padding: 5rem 2rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.carrito-vacio-icon {
+    font-size: 6rem;
+    color: #d1d8e0;
+    margin-bottom: 1.5rem;
+    animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+.carrito-vacio-container h5 {
+    color: #495057;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.carrito-vacio-container p {
+    color: #adb5bd;
+    margin-bottom: 2rem;
+ font-size: 1.05rem;
+}
+
+.btn-hacer-reserva {
+    background: linear-gradient(135deg, var(--color-primario) 0%, var(--color-primario-oscuro) 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: var(--transition);
+box-shadow: 0 4px 15px rgba(107, 142, 35, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-hacer-reserva::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.btn-hacer-reserva:hover::before {
+    left: 100%;
+}
+
+.btn-hacer-reserva:hover {
+ transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(107, 142, 35, 0.5);
+    color: white;
+}
+
+/* ============================================================ */
+/* SECCIÓN DE PROMOCIONES */
+/* ============================================================ */
+.promociones-section {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border: 2px solid var(--color-exito);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--sombra-suave);
+}
+
+.promociones-section::before {
+    content: '??';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 120px;
+    opacity: 0.1;
+    transform: rotate(15deg);
+}
+
+.promociones-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--color-exito-oscuro);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+}
+
+.promocion-card {
+ background: white;
+    border: 3px solid transparent;
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.promocion-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 0%, rgba(40, 167, 69, 0.05) 100%);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.promocion-card:hover::before {
+    opacity: 1;
+}
+
+.promocion-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: var(--sombra-media);
+    border-color: var(--color-exito);
+}
+
+.promocion-card.border-success {
+    border-color: var(--color-exito) !important;
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    box-shadow: 0 4px 20px rgba(40, 167, 69, 0.3);
+}
+
+.promocion-card h5 {
+  font-size: 2.5rem;
+    color: var(--color-exito);
+    margin-bottom: 0.5rem;
+    font-weight: 800;
+    position: relative;
+    z-index: 1;
+}
+
+.promocion-card small {
+    position: relative;
+    z-index: 1;
+    font-weight: 500;
+}
+
+/* ============================================================ */
+/* CONTROLES DE SELECCIÓN */
+/* ============================================================ */
+.controles-seleccion {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    border: 1px solid var(--color-borde);
+    box-shadow: var(--sombra-suave);
+}
+
+.info-seleccion {
+    display: flex;
+    align-items: center;
+  gap: 0.75rem;
+}
+
+.badge-seleccion {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 0 3px 10px rgba(0, 123, 255, 0.3);
+}
+
+.btn-group .btn {
+    border-radius: 25px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+
+.btn-group .btn:first-child {
+ border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.btn-group .btn:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.btn-group .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-suave);
+}
+
+/* ============================================================ */
+/* TABLA DE RESERVAS */
+/* ============================================================ */
+.tabla-reservas {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: var(--sombra-suave);
+}
+
+.table-reservas {
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table-reservas thead {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.table-reservas thead th {
+border-bottom: 3px solid var(--color-primario);
+    color: var(--color-primario-oscuro);
+    font-weight: 700;
+    padding: 1.25rem;
+    white-space: nowrap;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.table-reservas tbody tr {
+    transition: var(--transition);
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.table-reservas tbody tr:hover {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    transform: scale(1.01);
+    box-shadow: var(--sombra-suave);
+}
+
+.table-reservas td {
+    vertical-align: middle;
+    padding: 1.25rem;
+}
+
+/* Checkbox mejorado */
+.form-check-input {
+    width: 1.75rem;
+    height: 1.75rem;
+    cursor: pointer;
+    border: 2px solid var(--color-primario);
+    border-radius: 6px;
+    transition: var(--transition);
+}
+
+.form-check-input:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 4px rgba(107, 142, 35, 0.1);
+}
+
+.form-check-input:checked {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+  box-shadow: 0 0 0 4px rgba(107, 142, 35, 0.2);
+}
+
+/* Detalles de precio mejorados */
+.precio-detalle {
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+.precio-detalle .text-success {
+    font-weight: 700;
+    color: var(--color-exito) !important;
+}
+
+/* ============================================================ */
+/* RESUMEN DEL CARRITO */
+/* ============================================================ */
+.resumen-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 3px solid var(--color-primario);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    position: sticky;
+    top: 20px;
+    box-shadow: var(--sombra-fuerte);
+}
+
+.resumen-card h6 {
+    color: var(--color-primario-oscuro);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.resumen-card h6::before {
+    content: '??';
+    font-size: 1.5rem;
+}
+
+.resumen-linea {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    font-size: 1.05rem;
+    border-bottom: 1px dashed var(--color-borde);
+}
+
+.resumen-linea:last-child {
+    border-bottom: none;
+}
+
+.resumen-linea.total-final {
+    border-top: 3px solid var(--color-primario);
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--color-primario);
+    border-bottom: none;
+    background: linear-gradient(135deg, rgba(107, 142, 35, 0.05) 0%, transparent 100%);
+    padding: 1.5rem;
+    margin-left: -2rem;
+    margin-right: -2rem;
+    margin-bottom: -2rem;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.resumen-linea.descuento {
+    color: var(--color-exito);
+    font-weight: 700;
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.05) 0%, transparent 100%);
+    padding: 0.75rem 1rem;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    border-radius: 8px;
+}
+
+/* ============================================================ */
+/* BOTONES DE ACCIÓN PREMIUM */
+/* ============================================================ */
+.acciones-carrito {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-confirmar,
+.btn-factura,
+.btn-vaciar {
+ border: none;
+    padding: 1.25rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+ display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.btn-confirmar::before,
+.btn-factura::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s;
+}
+
+.btn-confirmar:hover::before,
+.btn-factura:hover::before {
+    left: 100%;
+}
+
+.btn-confirmar {
+    background: linear-gradient(135deg, var(--color-exito) 0%, var(--color-exito-oscuro) 100%);
+    color: white;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.btn-confirmar:hover:not(:disabled) {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(40, 167, 69, 0.5);
+}
+
+.btn-confirmar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-factura {
+ background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+.btn-factura:hover:not(:disabled) {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(0, 123, 255, 0.5);
+}
+
+.btn-vaciar {
+    background: transparent;
+    color: var(--color-peligro);
+    border: 3px solid var(--color-peligro);
+    font-weight: 600;
+}
+
+.btn-vaciar:hover:not(:disabled) {
+    background: var(--color-peligro);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+}
+
+/* ============================================================ */
+/* RESERVAS CONFIRMADAS */
+/* ============================================================ */
+.reservas-confirmadas-section {
+    margin-top: 4rem;
+}
+
+.confirmadas-card {
+    background: white;
+    border: 3px solid var(--color-exito);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--sombra-fuerte);
+    animation: slideInUp 0.6s ease-out 0.2s both;
+}
+
+.confirmadas-header {
+    background: linear-gradient(135deg, var(--color-exito) 0%, var(--color-exito-oscuro) 100%);
+    color: white;
+    padding: 2rem 2.5rem;
+    position: relative;
+  overflow: hidden;
+}
+
+.confirmadas-header::before {
+    content: '?';
+    position: absolute;
+    font-size: 200px;
+    right: -30px;
+    top: -50px;
+    opacity: 0.1;
+    font-weight: bold;
+}
+
+.confirmadas-header h5 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.confirmadas-header small {
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+}
+
+.confirmadas-vacio {
+    text-align: center;
+ padding: 4rem 2rem;
+    color: #6c757d;
+}
+
+.confirmadas-vacio i {
+    font-size: 5rem;
+    color: var(--color-exito);
+    margin-bottom: 1.5rem;
+ filter: drop-shadow(0 4px 12px rgba(40, 167, 69, 0.2));
+}
+
+/* ============================================================ */
+/* SECCIÓN DE FACTURA */
+/* ============================================================ */
+.factura-section {
+    margin-top: 4rem;
+}
+
+.factura-card {
+    background: white;
+    border: 3px solid #007bff;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--sombra-fuerte);
+  animation: slideInUp 0.6s ease-out 0.3s both;
+}
+
+.factura-header {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+padding: 2rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.factura-header::before {
+    content: '??';
+    position: absolute;
+    font-size: 150px;
+    right: -20px;
+    top: -30px;
+  opacity: 0.1;
+}
+
+.factura-info-box {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    border-left: 5px solid #007bff;
+    box-shadow: var(--sombra-suave);
+  transition: var(--transition);
+}
+
+.factura-info-box:hover {
+transform: translateY(-3px);
+    box-shadow: var(--sombra-media);
+}
+
+.factura-info-box h6 {
+    color: #007bff;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    border-bottom: 3px solid #007bff;
+    padding-bottom: 0.75rem;
+    font-size: 1.2rem;
+}
+
+.factura-info-box p {
+    margin-bottom: 1rem;
+    line-height: 1.8;
+    display: flex;
+  justify-content: space-between;
+}
+
+.factura-info-box p strong {
+    color: var(--color-texto);
+}
+
+/* ============================================================ */
+/* MODALES */
+/* ============================================================ */
+.modal-content {
+    border-radius: var(--border-radius);
+    border: none;
+    overflow: hidden;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--color-primario) 0%, var(--color-primario-oscuro) 100%);
+    color: white;
+    border-bottom: none;
+    padding: 2rem 2.5rem;
+}
+
+.modal-title {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.modal-body {
+    padding: 2.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--color-borde);
+    padding: 1.5rem 2.5rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+/* ============================================================ */
+/* ANIMACIONES */
+/* ============================================================ */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+  transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.badge {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* ============================================================ */
+/* RESPONSIVE MEJORADO */
+/* ============================================================ */
+@media (max-width: 768px) {
+    .carrito-container {
+        padding: 1.5rem 0;
+    }
+
+.carrito-header {
+        padding: 1.5rem;
+    }
+
+    .carrito-header h4 {
+        font-size: 1.4rem;
+    }
+
+    .carrito-header i {
+  font-size: 2rem;
+    }
+
+    .controles-seleccion {
+    flex-direction: column;
+        align-items: stretch;
+        padding: 1.25rem;
+    }
+
+    .btn-group {
+  width: 100%;
+  flex-direction: column;
+    }
+
+    .btn-group .btn {
+   border-radius: 12px !important;
+        margin-bottom: 0.5rem;
+    }
+
+    .resumen-card {
+        position: static;
+        margin-top: 2rem;
+    }
+
+    .table-reservas {
+    font-size: 0.85rem;
+    }
+
+  .table-reservas td,
+    .table-reservas th {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .promocion-card h5 {
+        font-size: 2rem;
+    }
+
+    .carrito-vacio-icon {
+    font-size: 4rem;
+ }
+}
+
+/* ============================================================ */
+/* UTILIDADES PREMIUM */
+/* ============================================================ */
+.text-primario {
+    color: var(--color-primario) !important;
+}
+
+.bg-primario {
+    background-color: var(--color-primario) !important;
+}
+
+.border-primario {
+    border-color: var(--color-primario) !important;
+}
+
+.shadow-suave {
+    box-shadow: var(--sombra-suave) !important;
+}
+
+.shadow-media {
+    box-shadow: var(--sombra-media) !important;
+}
+
+.shadow-fuerte {
+    box-shadow: var(--sombra-fuerte) !important;
+}
+
+/* Efectos de brillo en hover */
+.btn-confirmar:hover,
+.btn-factura:hover,
+.btn-hacer-reserva:hover {
+    filter: brightness(1.1);
+}
+
+/* Scroll suave */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Loading spinner mejorado */
+.spinner-border {
+    border-width: 3px;
+}
+
+/* Badges mejorados */
+.badge {
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    border-radius: 20px;
+}

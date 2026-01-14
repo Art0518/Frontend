@@ -1,46 +1,85 @@
-Generated with [vike.dev/new](https://vike.dev/new) ([version 558](https://www.npmjs.com/package/create-vike/v/0.0.558)) using this command:
+# 🍽️ Café San Juan - Frontend Vue 3
 
-```sh
-npm create vike@latest --- --vue
+Frontend migrado de HTML/CSS/JS vanilla a Vue 3 con Vike, manteniendo **exactamente** la misma funcionalidad y diseño.
+
+## 📋 Requisitos Previos
+
+- Node.js 18+ instalado
+- Backend de microservicios corriendo (puertos 5001-5004)
+
+## 🚀 Instalación y Ejecución
+
+```powershell
+# 1. Navegar al proyecto Vue
+cd CafeSanJuanVue
+
+# 2. Instalar dependencias
+npm install
+
+# 3. Copiar assets del frontend HTML (JavaScript e imágenes)
+cd ..
+.\copy-frontend-assets.ps1
+
+# 4. Ejecutar en desarrollo
+cd CafeSanJuanVue
+npm run dev
 ```
 
-## Contents
+La aplicación estará disponible en: **http://localhost:3000**
 
-- [Vike](#vike)
-  - [Plus files](#plus-files)
-  - [Routing](#routing)
-  - [SSR](#ssr)
-  - [HTML Streaming](#html-streaming)
+## 📦 Build para Producción
 
-## Vike
+```powershell
+npm run build
+```
 
-This app is ready to start. It's powered by [Vike](https://vike.dev) and [Vue](https://vuejs.org/guide/quick-start.html).
+Los archivos se generarán en la carpeta `dist/`
 
-### Plus files
+## ✅ Páginas Creadas
 
-[The + files are the interface](https://vike.dev/config) between Vike and your code.
+1. ✅ **Home** (`/`) - Página principal
+2. ✅ **Menú** (`/menu`) - Catálogo de platos
+3. ✅ **Reservas** (`/reservas`) - Sistema de reservas por pasos
+4. ✅ **Carrito** (`/carrito`) - Gestión de reservas pendientes
+5. ✅ **Confirmación** (`/confirmacion`) - Confirmación de reserva
+6. ✅ **Mi Perfil** (`/mi-perfil`) - Datos del usuario
+7. ✅ **Mis Reservas** (`/mis-reservas`) - Historial de reservas
 
-- [`+config.ts`](https://vike.dev/settings) — Settings (e.g. `<title>`)
-- [`+Page.vue`](https://vike.dev/Page) — The `<Page>` component
-- [`+data.ts`](https://vike.dev/data) — Fetching data (for your `<Page>` component)
-- [`+Layout.vue`](https://vike.dev/Layout) — The `<Layout>` component (wraps your `<Page>` components)
-- [`+Head.vue`](https://vike.dev/Head) - Sets `<head>` tags
-- [`/pages/_error/+Page.vue`](https://vike.dev/error-page) — The error page (rendered when an error occurs)
-- [`+onPageTransitionStart.ts`](https://vike.dev/onPageTransitionStart) and `+onPageTransitionEnd.ts` — For page transition animations
+## 🔧 Componentes Creados
 
-### Routing
+- ✅ **Navbar** - Navegación principal con roles (Cliente/Admin)
+- ✅ **Footer** - Pie de página
+- ✅ **Loading** - Pantalla de carga animada
+- ✅ **AuthModal** - Login y registro
+- ✅ **NotificationModal** - Alertas personalizadas
+- ✅ **ConfirmationModal** - Confirmaciones con botones
 
-[Vike's built-in router](https://vike.dev/routing) lets you choose between:
+## 🎨 CSS y Estilos
 
-- [Filesystem Routing](https://vike.dev/filesystem-routing) (the URL of a page is determined based on where its `+Page.vue` file is located on the filesystem)
-- [Route Strings](https://vike.dev/route-string)
-- [Route Functions](https://vike.dev/route-function)
+✅ `style.css` copiado sin cambios  
+✅ Todos los estilos originales preservados  
+✅ Responsive design mantenido  
+✅ Animaciones y transiciones intactas  
 
-### SSR
+## 📝 JavaScript Original Preservado
 
-SSR is enabled by default. You can [disable it](https://vike.dev/ssr) for all or specific pages.
+Todos los archivos `.js` del frontend HTML se copian a `public/js/` para mantener la lógica exacta:
 
-### HTML Streaming
+- `auth.js` - Autenticación
+- `carrito.js` - Gestión de carrito
+- `reservas.js` - Sistema de reservas
+- `notifications.js` - Sistema de notificaciones
+- Y más...
 
-You can [enable/disable HTML streaming](https://vike.dev/stream) for all or specific pages.
+## 🚀 Publicar en Monster
+
+```powershell
+.\publish-vue-monster.ps1
+```
+
+Luego sube el contenido de `dist/` a Monster usando FTP o File Manager.
+
+---
+
+**Un Rincón en San Juan** 🇵🇷
 
