@@ -1414,10 +1414,25 @@ const generarFacturaConfirmadas = async () => {
   tipoFactura.value = 'CONFIRMADA'
   
   try {
+    // Obtener la reserva seleccionada y calcular totales
+    const reserva = todasReservasConfirmadas.value.find(r => r.idReserva === reservaConfirmadaSeleccionada.value)
+    
+    if (!reserva) {
+      throw new Error('No se encontró la reserva seleccionada')
+    }
+    
+    // Calcular totales
+    const total = Number(reserva.total || 0)
+    const subtotal = total / 1.115
+    const iva = subtotal * 0.115
+    
     const payload = {
       IdUsuario: parseInt(usuario.value.IdUsuario || usuario.value.idUsuario),
       ReservasIds: String(reservaConfirmadaSeleccionada.value),
-      TipoFactura: 'CONFIRMADA'
+      TipoFactura: 'CONFIRMADA',
+      Subtotal: subtotal,
+      Iva: iva,
+      Total: total
     }
     
     console.log('Payload for confirmadas:', payload)
