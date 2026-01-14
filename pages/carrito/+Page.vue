@@ -1303,18 +1303,16 @@ const confirmarPago = async () => {
 
 const procesarPagoBancario = async (monto) => {
   try {
-    const response = await fetch(`${BASES.BANCO}/api/Transacciones`, {
+    const response = await fetch(`${BASES.FACTURACION}/api/facturas/proxy-banco`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        cuenta_origen: CUENTA_ORIGEN,
-        cuenta_destino: CUENTA_DESTINO,
+        cuenta_origen: CUENTA_ORIGEN.toString(),
+        cuenta_destino: CUENTA_DESTINO.toString(),
         monto: monto
       })
     })
-    
     const respuestaTexto = await response.text()
-    
     // Verificar si fue exitoso
     if (response.ok || respuestaTexto.toLowerCase().includes('correctamente')) {
       return { ok: true, mensaje: respuestaTexto || 'Transacción realizada correctamente' }
