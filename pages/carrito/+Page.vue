@@ -175,7 +175,7 @@
                       <div class="mini-resumen-acciones">
                         <button 
                           class="btn-mini btn-mini-success" 
-                          :disabled="!reservaSeleccionada || !esUsuarioLogueado"
+                          :disabled="!reservaSeleccionada || !esUsuarioLogueado || cargandoFactura"
                           @click="abrirModalConfirmarManual"
                         >
                           <i class="bi bi-check-circle"></i> Confirmar
@@ -186,9 +186,17 @@
                           :disabled="!reservaSeleccionada || !esUsuarioLogueado || cargandoFactura"
                           @click="generarFacturaDesdeCarrito"
                         >
-                          <span v-if="cargandoFactura" class="spinner-border spinner-border-sm me-1" role="status"></span>
-                          <i v-else class="bi bi-receipt"></i> 
-                          {{ cargandoFactura ? 'Gener...' : 'Facturar' }}
+                          <template v-if="cargandoFactura">
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            Generando PDF...
+                          </template>
+                          <template v-else>
+                            <i class="bi bi-receipt"></i> Facturar
+                          </template>
+                          </template>
+                          <template v-else>
+                            <i class="bi bi-receipt"></i> Facturar
+                          </template>
                         </button>
                       </div>
                     </div>
@@ -320,7 +328,7 @@
                             <span class="resumen-valor-total">${{ totalConfirmadas.toFixed(2) }}</span>
                           </div>
                         </div>
-                        <div class="mini-resumen-acciones">
+                        <div class="min PDFi-resumen-acciones">
                           <button 
                             class="btn-mini btn-mini-success w-100"
                             :disabled="!reservaConfirmadaSeleccionada || cargandoFactura"
@@ -2050,10 +2058,6 @@ watch(promocionSeleccionada, async (nuevaPromocion, viejaPromocion) => {
 .btn:disabled:hover {
   transform: none !important;
   box-shadow: none !important;
-}
-
-.badge.bg-primary {
-  background: #2563eb !important;
 }
 
 .text-primary {
