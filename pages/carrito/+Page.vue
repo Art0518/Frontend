@@ -193,10 +193,6 @@
                           <template v-else>
                             <i class="bi bi-receipt"></i> Facturar
                           </template>
-                          </template>
-                          <template v-else>
-                            <i class="bi bi-receipt"></i> Facturar
-                          </template>
                         </button>
                       </div>
                     </div>
