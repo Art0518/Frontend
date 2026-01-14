@@ -2,7 +2,8 @@
   "scripts": {
     "dev": "vike dev",
     "build": "vike build",
-    "preview": "vike build && vike preview"
+    "preview": "vike build && vike preview",
+    "start": "vike preview"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
