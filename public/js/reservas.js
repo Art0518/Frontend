@@ -1,6 +1,3 @@
-alert("reservas.js cargado");
-
-
 let reserva = {
     zona: null,
     personas: null,
@@ -38,6 +35,8 @@ function getMananaReal() {
 // 🟢 BLOQUEAR SI NO ESTÁ LOGUEADO
 // ===========================================================
 document.addEventListener("DOMContentLoaded", () => {
+    alert("[reservas.js] DOMContentLoaded ejecutado");
+    console.log("[reservas.js] DOMContentLoaded ejecutado");
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     if (!usuario) {
         alert("Debes iniciar sesión para hacer una reserva.");
@@ -45,14 +44,20 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    if (document.getElementById("nombre"))
+    if (document.getElementById("nombre")) {
         document.getElementById("nombre").value = usuario.Nombre;
+        alert("[reservas.js] Campo nombre encontrado y seteado");
+    }
 
-    if (document.getElementById("correo"))
+    if (document.getElementById("correo")) {
         document.getElementById("correo").value = usuario.Email;
+        alert("[reservas.js] Campo correo encontrado y seteado");
+    }
 
-    if (document.getElementById("telefono"))
+    if (document.getElementById("telefono")) {
         document.getElementById("telefono").value = usuario.Telefono || "";
+        alert("[reservas.js] Campo telefono encontrado y seteado");
+    }
 });
 
 // ===========================================================
@@ -86,16 +91,23 @@ function selectZona(z) {
 }
 
 function cargarMesasPorZona() {
+    alert("[reservas.js] cargarMesasPorZona ejecutado");
     fetch("https://reserva-production-279b.up.railway.app/api/mesas")
         .then(r => r.json())
         .then(todas => {
+            alert("[reservas.js] Mesas obtenidas: " + todas.length);
             mesasZona = todas.filter(m => m.TipoMesa === reserva.zona);
 
             const cont = document.getElementById("listaMesas");
+            if (!cont) {
+                alert("[reservas.js] No se encontró el contenedor de mesas (listaMesas)");
+                return;
+            }
             cont.innerHTML = "";
 
             if (!mesasZona.length) {
-                cont.innerHTML = `<p style="color:white;">No hay mesas en esta zona.</p>`;
+                cont.innerHTML = `<p style=\"color:white;\">No hay mesas en esta zona.</p>`;
+                alert("[reservas.js] No hay mesas en la zona seleccionada");
                 return;
             }
 
@@ -113,24 +125,17 @@ function cargarMesasPorZona() {
                 const imgSrc = m.ImagenURL?.trim() ? m.ImagenURL : "img/mesa-placeholder.jpg";
 
                 html += `
-                    <div id="mesa-${m.IdMesa}"
-                        onclick="seleccionarMesa(${m.IdMesa})"
-                        style="
-                            width:220px;
-                            background:white;
-                            border-radius:15px;
-                            overflow:hidden;
-                            box-shadow:0 4px 12px rgba(0,0,0,0.25);
-                            cursor:pointer;
-                        ">
+                    <div id=\"mesa-${m.IdMesa}\"
+                        onclick=\"seleccionarMesa(${m.IdMesa})\"
+                        style=\"width:220px; background:white; border-radius:15px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.25); cursor:pointer;\">
 
-                        <img src="${imgSrc}" style="width:100%; height:140px; object-fit:cover;">
+                        <img src=\"${imgSrc}\" style=\"width:100%; height:140px; object-fit:cover;\">
 
-                        <div style="padding:10px;">
-                            <h3 style="margin:0; color:#1a4d2e; font-size:18px;">
+                        <div style=\"padding:10px;\">
+                            <h3 style=\"margin:0; color:#1a4d2e; font-size:18px;\">
                                 Mesa ${m.NumeroMesa}
                             </h3>
-                            <p style="margin:4px 0; font-size:14px;">
+                            <p style=\"margin:4px 0; font-size:14px;\">
                                 Capacidad: <b>${m.Capacidad} personas</b>
                             </p>
                         </div>
@@ -141,6 +146,7 @@ function cargarMesasPorZona() {
 
             html += "</div>";
             cont.innerHTML = html;
+            alert("[reservas.js] Mesas renderizadas en el DOM");
         })
         .catch(err => {
             alert("Error al cargar las mesas.");
