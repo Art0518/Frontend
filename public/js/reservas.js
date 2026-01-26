@@ -83,7 +83,7 @@ function selectZona(z) {
 }
 
 function cargarMesasPorZona() {
-    fetch("http://cafesanjuanr.runasp.net/api/mesas")
+    fetch("https://reserva-production-279b.up.railway.app/api/mesas")
         .then(r => r.json())
         .then(todas => {
             mesasZona = todas.filter(m => m.TipoMesa === reserva.zona);
@@ -187,7 +187,7 @@ function validarFecha() {
 
     reserva.fecha = fecha;
 
-    fetch(`http://cafesanjuanr.runasp.net/api/mesas/${reserva.IdMesa}/disponibilidad?fecha=${fecha}`)
+    fetch(`https://reserva-production-279b.up.railway.app/api/mesas/${reserva.IdMesa}/disponibilidad?fecha=${fecha}`)
         .then(r => r.json())
         .then(data => {
             reserva.horasOcupadas = data.map(r => r.Hora);
@@ -316,7 +316,7 @@ function submitReserva() {
         Estado: "HOLD"
     };
 
-    fetch("http://cafesanjuanr.runasp.net/api/reservas/crear", {
+    fetch("https://reserva-production-279b.up.railway.app/api/reservas/crear", {
         method: "POST",
       headers: { "Content-Type": "application/json" },
 body: JSON.stringify(data)
