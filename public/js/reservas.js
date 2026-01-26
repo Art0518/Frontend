@@ -1,4 +1,7 @@
-﻿let reserva = {
+alert("reservas.js cargado");
+
+
+let reserva = {
     zona: null,
     personas: null,
     IdMesa: null,
